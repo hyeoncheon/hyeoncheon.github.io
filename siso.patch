@@ -1,0 +1,120 @@
+--- /dev/null
++++ b/app/controllers/sessions_controller.rb
+@@ -0,0 +1,27 @@
++class SessionsController < ApplicationController
++  def create
++    omniauth = request.env['omniauth.auth']
++    ai = omniauth[:info].clone
++    ai[:uid] = omniauth[:uid]
++    ai[:omniauth] = omniauth
++    logger.debug("DEBUG info: --#{ai.to_xml}--")
++
++    # for test purpose. edit below for real action.
++    render :xml => ai.to_xml
++  end
++
++  def failure
++    flash[:error] = request.parameters['message']
++    redirect_to root_path
++  end
++
++  def signout
++    if current_user
++      session[:user] = nil
++      session.delete :user
++      flash[:notice] = 'successfully signed out!'
++    end
++    redirect_to root_path
++  end
++end
++# vim: set ts=2 sw=2 expandtab:
+--- /dev/null
++++ b/config/initializers/omniauth.rb
+@@ -0,0 +1,13 @@
++require 'omniauth-siso'
++require File.expand_path('../../omniauth', __FILE__)
++
++Rails.application.config.middleware.use OmniAuth::Builder do
++  configure do |config|
++    config.path_prefix = SISO_PREFIX
++  end
++  provider :siso, SISO_APP_ID, SISO_SECRET, :client_options => {
++    site: SISO_SITE,
++    authorize_url: SISO_AUTHORIZE_URL,
++    token_url: SISO_TOKEN_URL
++  }
++end
+--- /dev/null
++++ b/config/omniauth.rb.dist
+@@ -0,0 +1,8 @@
++# Load the Rails application.
++
++SISO_APP_ID = "app_id from siso 0af2159c1b735c9511df..."
++SISO_SECRET = "secret from siso ab1c293db193a1e114ac..."
++SISO_SITE = "http://sandbox.example.com"
++SISO_AUTHORIZE_URL = "/siso/oauth/authorize"
++SISO_TOKEN_URL = "/siso/oauth/token"
++SISO_PREFIX = "/appname/auth"
+--- /dev/null
++++ b/lib/omniauth-siso.rb
+@@ -0,0 +1 @@
++require 'omniauth/siso'
+--- /dev/null
++++ b/lib/omniauth/siso.rb
+@@ -0,0 +1,2 @@
++require 'omniauth/siso/version'
++require 'omniauth/strategies/siso'
+--- /dev/null
++++ b/lib/omniauth/siso/version.rb
+@@ -0,0 +1,5 @@
++module Omniauth
++  module Siso
++    VERSION = "0.0.1"
++  end
++end
+--- /dev/null
++++ b/lib/omniauth/strategies/siso.rb
+@@ -0,0 +1,43 @@
++require 'omniauth'
++require 'omniauth-oauth2'
++
++module OmniAuth
++  module Strategies
++    class Siso < OmniAuth::Strategies::OAuth2
++      option :name, "siso"
++
++      # default values
++      option :client_options, {
++        :site => "http://sandbox.example.com",
++        :authorize_url => "/siso/oauth/authorize",
++        :token_url => "/siso/oauth/token"
++      }
++
++      uid { raw_info['id'] }
++
++      info do
++        {
++          :name => raw_info['name'],
++          :email => raw_info['mail'],
++          :nickname => raw_info['mail'],
++          :image => raw_info['image'],
++          :phone => raw_info['phone'],
++          :mobile => raw_info['mobile'],
++
++          :gid => raw_info['group_id'],
++          :active => raw_info['active']
++        }
++      end
++
++      extra do
++        {
++          'raw_info' => raw_info
++        }
++      end
++
++      def raw_info
++        @raw_info ||= access_token.get('/siso/api/v1/me.json').parsed
++      end
++    end
++  end
++end
