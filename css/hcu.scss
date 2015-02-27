@@ -1,0 +1,465 @@
+/* vim: set ts=2 sw=2:
+ *
+ */
+@import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,600);
+
+
+$context-root: "/spin";
+$images-dir: $context-root + "/images";
+
+$font-family: "Titillium Web", "맑은 고딕", "Malgun Gothic";
+$font-size: 11pt;
+$font-size-mini: 0.8em;
+$font-size-small: 0.9em;
+$font-size-big: 1.2em;
+
+$background-body: #f9f9f9;
+$background-header: #000;
+$background-menubar: rgba(255,40,80,0.6);
+$background-footer: #f0f0f0;
+$background-table: #fff;
+$background-active: rgba(255,40,120,0.2);
+$background-widget: #fafafa;
+
+
+$color-text: #333333;
+$color-pale: #999999;
+$color-link: #ff0000;
+$color-link-hover: #c96293;
+
+$border-color-default: #999;
+$mid-z-index: 100;
+
+$color-header: white;
+$header-height: 70px;
+//$box-shadow-header: 0 2px 3px #777;
+$footer-height: 50px;
+$logo-size-footer: 72px;
+$box-margin: 12px;
+//$box-shadow-footer: 0 0 8px rgba(255,100,140,0.4);
+$box-shadow: 0 2px 6px rgba(70,70,70,0.9);
+
+
+$color-error: #fff !important;
+$color-warn: #fff !important;
+$color-locked: #bbb;
+$background-error: #f00 !important;
+$background-warn: #ffdada !important;
+
+$input-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+$widget-border: 1px solid #ccc;
+$widget-active-background: #eee; 
+$widget-active-box-shadow: 0 3px 5px rgba(0,0,0,0.1) inset;
+
+/* what? */
+$inp-trans: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+
+
+
+/*** common tags */
+html {
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: $font-family;
+	font-size: $font-size;
+	height: 100%;
+	color: $color-text;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: $font-family;
+	font-weight: 600;
+}
+
+a, a:visited {
+	text-decoration: none;
+	color: inherit;
+
+	&:hover { color: $color-link-hover; }
+
+	&.hl {
+		color: $color-link;
+	}
+}
+
+p { margin: 0; }
+
+
+
+/*** style/decorations */
+.ta-j { text-align: justify; }
+.ta-c { text-align: center; }
+.ta-r { text-align: right; }
+.ta-l { text-align: left; }
+.pull-right { float: right; }
+
+.ui-clickable { cursor: pointer; }
+.invisible { display: none; }
+
+.srw.icon {
+	font-family: 'srw-icon';
+}
+
+
+/*** site structure */
+.sticky-header {
+	/* sticky header */
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	height: $header-height;
+	z-index: 99;
+	/* common */
+	background: $background-header;
+	background-image: url($images-dir + "/spin-bg.png");
+	color: $color-header;
+	box-shadow: $box-shadow;
+
+	.header {
+		padding: 2px 10px 2px;
+
+		h1 {
+			display: inline;
+			margin: 0;
+		}
+	}
+	.menu.top-bar {
+		padding: 0px 10px;
+		background: $background-menubar;
+		/* sticky header */
+		position: absolute;
+		width: 100%;
+		bottom: 0;
+
+		ul {
+			margin: 0;
+			padding: 0;
+			font-size: $font-size-small;
+
+			li {
+				display: inline;
+				padding: 0 10px;
+
+				a {
+					color: inherit;
+				}
+			}
+		}
+	}
+}
+
+.body-wrapper {
+	background: $background-body;
+	background-image: url($images-dir + "/spin-grey.png");
+	background-position: right bottom;
+	background-repeat: no-repeat;
+	background-size: $logo-size-footer auto;
+
+	height: auto !important;
+	min-height: 100%;
+	margin: 0 auto -75px;
+
+	/* sticky header */
+	padding: $header-height 0 0;
+
+	.mainpage {
+		margin: $box-margin;
+	}
+	.foot-holder {
+		clear: both;
+		height: $logo-size-footer + $box-margin;
+	}
+}
+
+.sticky-footer {
+	/* box */
+	height: $footer-height;
+	width: 100%;
+	padding: 3px $logo-size-footer + 8px 0px 3px;
+	border-top: 1px solid $border-color-default;
+	/* font */
+	font-weight: 300;
+	font-size: $font-size-mini;
+	line-height: 1.1;
+	/* sticky */
+	position: fixed;
+	bottom: 0;
+	z-index: $mid-z-index - 1;
+	/* sticky background */
+	background: $background-footer;
+	background-image: url($images-dir + "/spin-grey.png");
+	background-position: right bottom;
+	background-repeat: no-repeat;
+	background-size: $logo-size-footer auto;
+	box-shadow: $box-shadow;
+
+	.status-message {
+		position: absolute;
+		left: 4px;
+		padding: 0 8px;
+		font-style: italic;
+		ul {
+			margin: 0;
+			padding: 0;
+			li {
+				list-style: none;
+			}
+		}
+	}
+	p {
+		margin: 0;
+		text-align: right;
+	}
+}
+
+/*** containers */
+.hc-pan-container {
+	padding: 8px;
+	background: #eee;
+	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) inset;
+	margin-bottom: $box-margin;
+
+	&-fade {
+		position: absolute;
+		left: $box-margin;
+		right: $box-margin;
+		top: $header-height + $box-margin;
+	}
+
+	.hc-pan-title {
+		margin: 0;
+		float: left;
+	}
+	.hc-pan-control {
+		text-align: right;
+		margin-top: 10px;
+		form {
+			display: inline;
+		}
+	}
+	.hc-tab-container {
+		clear: both;
+		border: $widget-border;
+		border-left: 0px; 
+		border-spacing: 0px;
+		font-size: $font-size-small;
+		width: 100%;
+
+		thead {
+			background-image: linear-gradient(50deg, #eeeeee 15%, #ffffff 100%);
+			background: -moz-linear-gradient(center bottom, #eeeeee 0%, #ffffff 100%) repeat scroll 0 0 padding-box rgba(0, 0, 0, 0);
+			border-bottom: $widget-border;
+
+			tr, th {
+				border: 0 !important;
+			}
+			tr {
+				th {
+					border-left: $widget-border !important;
+					&.filter {
+						padding: 1px 3px;
+					}
+				}
+			}
+		}
+		tbody {
+			tr {
+				cursor: pointer; 
+
+				&.hc-tab-group { color: inherit; }
+
+				td {
+					border-left: $widget-border !important;
+					border-top: $widget-border !important;
+					background: $background-table;
+					padding: 1px 4px;
+					vertical-align: top;
+					white-space: nowrap;
+				}
+				&:nth-child(even) td {
+					background: $background-widget;
+				}
+				&.active td {
+					background: $background-active !important;
+				}
+			}
+		}
+	}
+	.hc-pan-footer {
+		font-size: $font-size-small;
+		/* XXX */
+		word-wrap: break-word;
+	}
+}
+
+
+
+/*** widget */
+button, input, select, textarea {
+	font-family: inherit;
+	font-size: $font-size-small;
+}
+
+.ng-table th.filter .input-filter,
+.ui-input {
+	border: $widget-border;
+	border-radius: 3px;
+	box-shadow: $input-box-shadow;
+	color: $color-pale;
+	font-size: $font-size-small;
+	padding: 0px 8px;
+	transition: $inp-trans; 
+	vertical-align: middle;
+	margin: 4px auto;
+	min-height: 1.6em;
+}
+
+.btn {
+	color: $color-text;
+	-moz-user-select: none;
+	background: $background-widget;
+	border: $widget-border;
+	border-radius: 4px;
+	cursor: pointer;
+	display: inline-block;
+	font-size: $font-size-mini;
+	margin-bottom: 0;
+	padding: 4px 6px;
+	white-space: nowrap;
+	margin: 2px 0;
+	line-height: 1;
+
+	&:hover {
+		background: $widget-active-background;
+		color: inherit;
+	}
+	&.active {
+		box-shadow: $widget-active-box-shadow;
+		background: $widget-active-background; 
+	}
+}
+
+.btn-group {
+	margin: 2px 0;
+	.btn {
+		margin: 0;
+		float: left;
+		position: relative;
+
+		&:first-child:not(:last-child):not(.dropdown-toggle) {
+			border-bottom-right-radius: 0;
+			border-top-right-radius: 0;
+		}
+		&:last-child:not(:first-child):not(.dropdown-toggle) {
+			border-bottom-left-radius: 0;
+			border-top-left-radius: 0; 
+			border-left: 0;
+		}
+		&:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+			border-radius: 0;
+			border-left: 0;
+		}
+	}
+}
+
+.pagination {
+	margin: 5px 0;
+	padding-left: 0;
+	li {
+		display: inline-block;
+		border: $widget-border;
+		font-size: $font-size-small;
+		margin-right: 1px;
+		text-align: center;
+		width: 20px;
+		background: $background-widget;
+		&.disabled {
+			background: $widget-active-background;
+			box-shadow: $widget-active-box-shadow;
+		}
+	}
+}
+
+
+/*** additional */
+.full-screen {
+	z-index: $mid-z-index;
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+
+	text-align: center;
+	.info-box {
+		display: inline-block;
+		margin: 0 auto;
+		padding: 4px;
+		position: relative;
+		top: 150px;
+		background: rgba(255, 255, 255, 0);
+		.close_lock {
+			color: white;
+		}
+		p {
+			margin: 10px 0;
+			padding: 5px 20px;
+			color: white;
+			font-size: $font-size-big;
+			text-shadow: 0 0 3px rgb(255, 0, 220);
+		}
+	}
+
+	&.dark {
+		background: rgba(0, 0, 0, 0.7);
+	}
+}
+
+
+/*** misc, bugfix, overrides ----------------------------------------------- */
+* {
+	box-sizing: border-box;
+}
+
+/*** class holder for javascript */
+.popup-register-server { color: inherit; }
+.popup-register-user { color: inherit; }
+.register-server { color: inherit; }
+.register-user { color: inherit; }
+.backend-progress { color: inherit; }
+.close_lock { color: inherit; }
+.ok { color: inherit; }
+
+/* blank */
+.ng-table-group { color: inherit; }
+
+/*** override, semantic-ui */
+.ui.small.modal.inverted {
+	border-radius: 0px;
+	border: 0px;
+}
+
+/*** logical, ----------------- important --------------------------------- */
+.locked {
+	color: $color-locked;
+}
+.warn {
+	background: $background-warn;
+	color: $color-warn;
+}
+.err {
+	background: $background-error;
+	color: $color-error;
+	font-weight: bold !important;
+}
+
+.red {
+	color: red;
+}
+.orange {
+	color: orange;
+}
+
